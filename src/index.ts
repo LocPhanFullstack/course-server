@@ -4,8 +4,16 @@ import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
+import * as dynamoose from "dynamoose";
+import courseRoute from "./routes/courseRoutes";
 
 dotenv.config();
+
+const isProduction = process.env.NODE_ENV === "production";
+
+if (!isProduction) {
+  dynamoose.aws.ddb.local();
+}
 
 const app = express();
 app.use(express.json());
@@ -21,8 +29,10 @@ app.get("/", (req, res) => {
   res.send("hello");
 });
 
+app.use("/courses", courseRoute);
+
 // SERVER
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
