@@ -7,7 +7,11 @@ import bodyParser from "body-parser";
 import * as dynamoose from "dynamoose";
 import courseRoute from "./routes/courseRoutes";
 import userClerkRoute from "./routes/userClerkRoutes";
-import { createClerkClient } from "@clerk/express";
+import {
+  clerkMiddleware,
+  createClerkClient,
+  requireAuth,
+} from "@clerk/express";
 
 dotenv.config();
 
@@ -29,6 +33,7 @@ app.use(morgan("common"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
+app.use(clerkMiddleware());
 
 // ROUTES
 app.get("/", (req, res) => {
@@ -36,7 +41,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/courses", courseRoute);
-app.use("/users/clerk", userClerkRoute);
+app.use("/users/clerk", requireAuth(), userClerkRoute);
 
 // SERVER
 const port = process.env.PORT || 8080;
