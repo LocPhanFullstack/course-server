@@ -17,9 +17,9 @@ export const getListOfCourses = async (
 };
 
 export const getCourse = async (req: Request, res: Response): Promise<void> => {
-  const { categoryId } = req.params;
+  const { courseId } = req.params;
   try {
-    const course = await courseService.getCourse(categoryId);
+    const course = await courseService.getCourse(courseId);
     res.json({ message: "Course retrieved successfully!!!", data: course });
   } catch (error: any) {
     res

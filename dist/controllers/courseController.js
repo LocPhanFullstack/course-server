@@ -58,9 +58,9 @@ const getListOfCourses = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.getListOfCourses = getListOfCourses;
 const getCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { categoryId } = req.params;
+    const { courseId } = req.params;
     try {
-        const course = yield courseService.getCourse(categoryId);
+        const course = yield courseService.getCourse(courseId);
         res.json({ message: "Course retrieved successfully!!!", data: course });
     }
     catch (error) {
