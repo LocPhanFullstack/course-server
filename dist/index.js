@@ -46,6 +46,7 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const dynamoose = __importStar(require("dynamoose"));
 const courseRoutes_1 = __importDefault(require("./routes/courseRoutes"));
 const userClerkRoutes_1 = __importDefault(require("./routes/userClerkRoutes"));
+const transactionRoute_1 = __importDefault(require("./routes/transactionRoute"));
 const express_2 = require("@clerk/express");
 dotenv_1.default.config();
 const isProduction = process.env.NODE_ENV === "production";
@@ -70,6 +71,7 @@ app.get("/", (req, res) => {
 });
 app.use("/courses", courseRoutes_1.default);
 app.use("/users/clerk", (0, express_2.requireAuth)(), userClerkRoutes_1.default);
+app.use("/transaction", (0, express_2.requireAuth)(), transactionRoute_1.default);
 // SERVER
 const port = process.env.PORT || 8080;
 app.listen(port, () => {

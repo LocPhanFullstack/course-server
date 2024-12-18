@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import * as dynamoose from "dynamoose";
 import courseRoute from "./routes/courseRoutes";
 import userClerkRoute from "./routes/userClerkRoutes";
+import transactionRoute from "./routes/transactionRoute";
 import {
   clerkMiddleware,
   createClerkClient,
@@ -42,6 +43,7 @@ app.get("/", (req, res) => {
 
 app.use("/courses", courseRoute);
 app.use("/users/clerk", requireAuth(), userClerkRoute);
+app.use("/transaction", requireAuth(), transactionRoute);
 
 // SERVER
 const port = process.env.PORT || 8080;
