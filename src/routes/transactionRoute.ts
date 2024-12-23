@@ -7,5 +7,6 @@ router.post(
   "/stripe/payment-intent",
   transactionController.createStripePaymentIntent
 );
+router.post("/", transactionController.createTransaction);
 
 export default router;
