@@ -1,6 +1,9 @@
 // services/paymentService.ts
 import Stripe from "stripe";
 import dotenv from "dotenv";
+import Course from "../models/courseModel";
+import Transaction from "../models/transactionModel";
+import UserCourseProgress from "../models/userCourseProgressModel";
 
 dotenv.config();
 
@@ -26,5 +29,66 @@ export const createPaymentIntent = async (amount: number) => {
     return paymentIntent;
   } catch (error: any) {
     throw new Error(`Error creating payment intent: ${error.message}`);
+  }
+};
+
+export const createTransaction = async (
+  userId: string,
+  courseId: string,
+  transactionId: string,
+  amount: number,
+  paymentProvider: string
+) => {
+  if (!userId || !courseId || !transactionId || !amount || !paymentProvider) {
+    throw new Error(
+      "Missing required parameters in service: userId, courseId, transactionId, amount, and paymentProvider are all required."
+    );
+  }
+  try {
+    const course = await Course.get(courseId);
+    if (!course) {
+      throw new Error("Course not found");
+    }
+
+    const newTransaction = new Transaction({
+      dateTime: new Date().toISOString(),
+      userId,
+      courseId,
+      transactionId,
+      amount,
+      paymentProvider,
+    });
+    await newTransaction.save();
+
+    const initialProgress = new UserCourseProgress({
+      userId,
+      courseId,
+      enrollmentDate: new Date().toISOString(),
+      overallProgress: 0,
+      sections: course.sections.map((section: any) => ({
+        sectionId: section.sectionId,
+        chapters: section.chapters.map((chapter: any) => ({
+          chapterId: chapter.chapterId,
+          complete: false,
+        })),
+      })),
+      lastAccessedTimestamp: new Date().toISOString(),
+    });
+    await initialProgress.save();
+
+    await Course.update(
+      { courseId },
+      {
+        $ADD: {
+          enrollments: [{ userId }],
+        },
+      }
+    );
+
+    return { newTransaction, initialProgress };
+  } catch (error: any) {
+    throw new Error(
+      "Error creating transaction and enrollment: " + error.message
+    );
   }
 };

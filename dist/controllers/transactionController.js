@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createStripePaymentIntent = void 0;
+exports.createTransaction = exports.createStripePaymentIntent = void 0;
 const transactionService = __importStar(require("../services/transactionService"));
 const createStripePaymentIntent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { amount } = req.body;
@@ -66,3 +66,24 @@ const createStripePaymentIntent = (req, res) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.createStripePaymentIntent = createStripePaymentIntent;
+const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let { userId, courseId, transactionId, amount, paymentProvider } = req.body;
+    try {
+        // Gọi service để xử lý nghiệp vụ
+        const { newTransaction, initialProgress } = yield transactionService.createTransaction(userId, courseId, transactionId, amount, paymentProvider);
+        res.json({
+            message: "Purchase a course successfully!!!",
+            data: {
+                transaction: newTransaction,
+                courseProgress: initialProgress,
+            },
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Error creating transaction and enrollment",
+            error: error.message,
+        });
+    }
+});
+exports.createTransaction = createTransaction;

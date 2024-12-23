@@ -49,9 +49,9 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const userData = req.body;
     try {
         // Gọi service để cập nhật dữ liệu người dùng
-        const user = yield userClerkService.updateUser(userId, userData);
+        yield userClerkService.updateUser(userId, userData);
         // Trả về phản hồi sau khi cập nhật thành công
-        res.json({ message: "User updated successfully", data: user });
+        res.json({ message: "User updated successfully" });
     }
     catch (error) {
         // Xử lý lỗi nếu có

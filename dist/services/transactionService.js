@@ -12,10 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createPaymentIntent = void 0;
+exports.createTransaction = exports.createPaymentIntent = void 0;
 // services/paymentService.ts
 const stripe_1 = __importDefault(require("stripe"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const courseModel_1 = __importDefault(require("../models/courseModel"));
+const transactionModel_1 = __importDefault(require("../models/transactionModel"));
+const userCourseProgressModel_1 = __importDefault(require("../models/userCourseProgressModel"));
 dotenv_1.default.config();
 if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error("STRIPE_SECRET_KEY is required but was not found in env variables");
@@ -38,3 +41,48 @@ const createPaymentIntent = (amount) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.createPaymentIntent = createPaymentIntent;
+const createTransaction = (userId, courseId, transactionId, amount, paymentProvider) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!userId || !courseId || !transactionId || !amount || !paymentProvider) {
+        throw new Error("Missing required parameters in service: userId, courseId, transactionId, amount, and paymentProvider are all required.");
+    }
+    try {
+        const course = yield courseModel_1.default.get(courseId);
+        if (!course) {
+            throw new Error("Course not found");
+        }
+        const newTransaction = new transactionModel_1.default({
+            dateTime: new Date().toISOString(),
+            userId,
+            courseId,
+            transactionId,
+            amount,
+            paymentProvider,
+        });
+        yield newTransaction.save();
+        const initialProgress = new userCourseProgressModel_1.default({
+            userId,
+            courseId,
+            enrollmentDate: new Date().toISOString(),
+            overallProgress: 0,
+            sections: course.sections.map((section) => ({
+                sectionId: section.sectionId,
+                chapters: section.chapters.map((chapter) => ({
+                    chapterId: chapter.chapterId,
+                    complete: false,
+                })),
+            })),
+            lastAccessedTimestamp: new Date().toISOString(),
+        });
+        yield initialProgress.save();
+        yield courseModel_1.default.update({ courseId }, {
+            $ADD: {
+                enrollments: [{ userId }],
+            },
+        });
+        return { newTransaction, initialProgress };
+    }
+    catch (error) {
+        throw new Error("Error creating transaction and enrollment: " + error.message);
+    }
+});
+exports.createTransaction = createTransaction;

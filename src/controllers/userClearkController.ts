@@ -10,10 +10,10 @@ export const updateUser = async (
 
   try {
     // Gọi service để cập nhật dữ liệu người dùng
-    const user = await userClerkService.updateUser(userId, userData);
+    await userClerkService.updateUser(userId, userData);
 
     // Trả về phản hồi sau khi cập nhật thành công
-    res.json({ message: "User updated successfully", data: user });
+    res.json({ message: "User updated successfully" });
   } catch (error: any) {
     // Xử lý lỗi nếu có
     console.error("Error updating user:", error);
