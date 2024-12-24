@@ -68,7 +68,7 @@ const createTransaction = (userId, courseId, transactionId, amount, paymentProvi
                 sectionId: section.sectionId,
                 chapters: section.chapters.map((chapter) => ({
                     chapterId: chapter.chapterId,
-                    complete: false,
+                    completed: false,
                 })),
             })),
             lastAccessedTimestamp: new Date().toISOString(),

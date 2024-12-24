@@ -69,7 +69,7 @@ export const createTransaction = async (
         sectionId: section.sectionId,
         chapters: section.chapters.map((chapter: any) => ({
           chapterId: chapter.chapterId,
-          complete: false,
+          completed: false,
         })),
       })),
       lastAccessedTimestamp: new Date().toISOString(),
