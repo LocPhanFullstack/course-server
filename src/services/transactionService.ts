@@ -92,3 +92,14 @@ export const createTransaction = async (
     );
   }
 };
+
+export const getListOfTransactions = async (userId: string) => {
+  try {
+    const transactions = userId
+      ? await Transaction.query("userId").eq(userId).exec()
+      : Transaction.scan().exec();
+    return transactions;
+  } catch (error: any) {
+    throw new Error("Error getting list of transactions: " + error.message);
+  }
+};

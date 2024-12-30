@@ -8,5 +8,6 @@ router.post(
   transactionController.createStripePaymentIntent
 );
 router.post("/", transactionController.createTransaction);
+router.post("/list", transactionController.getListOfTransactions);
 
 export default router;

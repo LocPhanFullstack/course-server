@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTransaction = exports.createPaymentIntent = void 0;
+exports.getListOfTransactions = exports.createTransaction = exports.createPaymentIntent = void 0;
 // services/paymentService.ts
 const stripe_1 = __importDefault(require("stripe"));
 const dotenv_1 = __importDefault(require("dotenv"));
@@ -86,3 +86,15 @@ const createTransaction = (userId, courseId, transactionId, amount, paymentProvi
     }
 });
 exports.createTransaction = createTransaction;
+const getListOfTransactions = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const transactions = userId
+            ? yield transactionModel_1.default.query("userId").eq(userId).exec()
+            : transactionModel_1.default.scan().exec();
+        return transactions;
+    }
+    catch (error) {
+        throw new Error("Error getting list of transactions: " + error.message);
+    }
+});
+exports.getListOfTransactions = getListOfTransactions;

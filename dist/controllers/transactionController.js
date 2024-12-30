@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTransaction = exports.createStripePaymentIntent = void 0;
+exports.getListOfTransactions = exports.createTransaction = exports.createStripePaymentIntent = void 0;
 const transactionService = __importStar(require("../services/transactionService"));
 const createStripePaymentIntent = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { amount } = req.body;
@@ -87,3 +87,20 @@ const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.createTransaction = createTransaction;
+const getListOfTransactions = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { userId } = req.query;
+        const transactions = yield transactionService.getListOfTransactions(userId);
+        res.json({
+            message: "Transactions retrieved successfully!!!",
+            data: transactions,
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            message: "Error getting list of transactions",
+            error: error.message,
+        });
+    }
+});
+exports.getListOfTransactions = getListOfTransactions;

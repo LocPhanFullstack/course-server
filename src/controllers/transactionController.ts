@@ -59,3 +59,25 @@ export const createTransaction = async (
     });
   }
 };
+
+export const getListOfTransactions = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { userId } = req.query;
+    const transactions = await transactionService.getListOfTransactions(
+      userId as string
+    );
+
+    res.json({
+      message: "Transactions retrieved successfully!!!",
+      data: transactions,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Error getting list of transactions",
+      error: error.message,
+    });
+  }
+};
