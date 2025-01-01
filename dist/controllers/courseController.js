@@ -42,8 +42,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCourse = exports.getListOfCourses = void 0;
+exports.deleteCourse = exports.updateCourse = exports.createCourse = exports.getCourse = exports.getListOfCourses = void 0;
 const courseService = __importStar(require("../services/courseService"));
+const express_1 = require("@clerk/express");
 const getListOfCourses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { category } = req.query;
     try {
@@ -70,3 +71,53 @@ const getCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.getCourse = getCourse;
+const createCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { teacherId, teacherName } = req.body;
+    try {
+        const newCourse = yield courseService.createCourse(teacherId, teacherName);
+        res.json({ message: "Course created successfully!!!", data: newCourse });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Error creating course", error: error.message });
+    }
+});
+exports.createCourse = createCourse;
+const updateCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { courseId } = req.params;
+    const updateData = Object.assign({}, req.body);
+    const { userId } = (0, express_1.getAuth)(req);
+    if (userId === null) {
+        res.status(400).json({ message: "User is not authenticated" });
+        return;
+    }
+    try {
+        const course = yield courseService.updateCourse(courseId, updateData, userId);
+        res.json({ message: "Course updated successfully!!!", data: course });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Error updating course", error: error.message });
+    }
+});
+exports.updateCourse = updateCourse;
+const deleteCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { courseId } = req.params;
+    const { userId } = (0, express_1.getAuth)(req);
+    if (userId === null) {
+        res.status(400).json({ message: "User is not authenticated" });
+        return;
+    }
+    try {
+        yield courseService.deleteCourse(courseId, userId);
+        res.json({ message: "Course deleted successfully!!!" });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Error deleting course", error: error.message });
+    }
+});
+exports.deleteCourse = deleteCourse;
