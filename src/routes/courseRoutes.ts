@@ -6,14 +6,14 @@ import multer from "multer";
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post("/", courseController.getListOfCourses);
-router.post("/:courseId", courseController.getCourse);
+router.get("/", courseController.getListOfCourses);
+router.get("/:courseId", courseController.getCourse);
 router.put(
   "/:courseId",
   requireAuth(),
   upload.single("image"),
   courseController.updateCourse
 );
-router.post("/course", requireAuth(), courseController.createCourse);
+router.post("/", requireAuth(), courseController.createCourse);
 
 export default router;

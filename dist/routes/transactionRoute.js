@@ -41,5 +41,5 @@ const transactionController = __importStar(require("../controllers/transactionCo
 const router = express_1.default.Router();
 router.post("/stripe/payment-intent", transactionController.createStripePaymentIntent);
 router.post("/", transactionController.createTransaction);
-router.post("/list", transactionController.getListOfTransactions);
+router.get("/", transactionController.getListOfTransactions);
 exports.default = router;
