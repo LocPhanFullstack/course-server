@@ -78,9 +78,7 @@ const createCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.json({ message: "Course created successfully!!!", data: newCourse });
     }
     catch (error) {
-        res
-            .status(500)
-            .json({ message: "Error creating course", error: error.message });
+        res.status(500).json({ message: "Error creating course", error });
     }
 });
 exports.createCourse = createCourse;

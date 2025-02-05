@@ -62,9 +62,10 @@ const createCourse = (teacherId, teacherName) => __awaiter(void 0, void 0, void 
             enrollments: [],
         });
         yield newCourse.save();
+        return newCourse;
     }
     catch (error) {
-        throw new Error("Error retrieving course");
+        throw new Error("Error creating course");
     }
 });
 exports.createCourse = createCourse;

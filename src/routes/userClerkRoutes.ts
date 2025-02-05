@@ -1,8 +1,8 @@
-import express from "express";
-import * as userClearkController from "../controllers/userClearkController";
+import express from 'express'
+import * as userClearkController from '../controllers/userClearkController'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post("/:userId", userClearkController.updateUser);
+router.put('/:userId', userClearkController.updateUser)
 
-export default router;
+export default router

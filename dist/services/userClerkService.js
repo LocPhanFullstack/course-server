@@ -13,11 +13,12 @@ exports.updateUser = void 0;
 const __1 = require("..");
 const updateUser = (userId, userData) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield __1.clerkClient.users.updateUserMetadata(userId, {
+        const user = yield __1.clerkClient.users.updateUserMetadata(userId, {
             publicMetadata: {
                 settings: userData.publicMetadata.settings,
             },
         });
+        return user;
     }
     catch (error) {
         throw new Error(`Error updating user metadata: ${error.message}`);

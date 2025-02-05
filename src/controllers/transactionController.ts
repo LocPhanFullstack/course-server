@@ -13,7 +13,7 @@ export const createStripePaymentIntent = async (
 
   try {
     const paymentIntent = await transactionService.createPaymentIntent(amount);
-
+    
     res.json({
       message: "",
       data: {

@@ -39,5 +39,5 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const userClearkController = __importStar(require("../controllers/userClearkController"));
 const router = express_1.default.Router();
-router.post("/:userId", userClearkController.updateUser);
+router.put('/:userId', userClearkController.updateUser);
 exports.default = router;

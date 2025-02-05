@@ -49,8 +49,9 @@ export const createCourse = async (teacherId: string, teacherName: string) => {
       enrollments: [],
     });
     await newCourse.save();
+    return newCourse;
   } catch (error) {
-    throw new Error("Error retrieving course");
+    throw new Error("Error creating course");
   }
 };
 

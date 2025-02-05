@@ -38,9 +38,7 @@ export const createCourse = async (
     const newCourse = await courseService.createCourse(teacherId, teacherName);
     res.json({ message: "Course created successfully!!!", data: newCourse });
   } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: "Error creating course", error: error.message });
+    res.status(500).json({ message: "Error creating course", error });
   }
 };
 
