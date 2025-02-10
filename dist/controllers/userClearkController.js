@@ -48,16 +48,13 @@ const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     const { userId } = req.params;
     const userData = req.body;
     try {
-        // Gọi service để cập nhật dữ liệu người dùng
         const user = yield userClerkService.updateUser(userId, userData);
-        // Trả về phản hồi sau khi cập nhật thành công
-        res.json({ message: 'User updated successfully', data: user });
+        res.json({ message: "User updated successfully", data: user });
     }
     catch (error) {
-        // Xử lý lỗi nếu có
-        console.error('Error updating user:', error);
+        console.error("Error updating user:", error);
         res.status(500).json({
-            message: 'Error updating user',
+            message: "Error updating user",
             error: error.message || error,
         });
     }

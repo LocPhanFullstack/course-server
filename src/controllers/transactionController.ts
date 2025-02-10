@@ -13,7 +13,7 @@ export const createStripePaymentIntent = async (
 
   try {
     const paymentIntent = await transactionService.createPaymentIntent(amount);
-    
+
     res.json({
       message: "",
       data: {
@@ -35,7 +35,6 @@ export const createTransaction = async (
   let { userId, courseId, transactionId, amount, paymentProvider } = req.body;
 
   try {
-    // Gọi service để xử lý nghiệp vụ
     const { newTransaction, initialProgress } =
       await transactionService.createTransaction(
         userId,

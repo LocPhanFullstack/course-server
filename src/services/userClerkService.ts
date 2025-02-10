@@ -1,4 +1,4 @@
-import { clerkClient } from '..'
+import { clerkClient } from "..";
 
 export const updateUser = async (userId: string, userData: any) => {
   try {
@@ -6,9 +6,9 @@ export const updateUser = async (userId: string, userData: any) => {
       publicMetadata: {
         settings: userData.publicMetadata.settings,
       },
-    })
-    return user
+    });
+    return user;
   } catch (error: any) {
-    throw new Error(`Error updating user metadata: ${error.message}`)
+    throw new Error(`Error updating user metadata: ${error.message}`);
   }
-}
+};
