@@ -69,7 +69,6 @@ exports.createStripePaymentIntent = createStripePaymentIntent;
 const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     let { userId, courseId, transactionId, amount, paymentProvider } = req.body;
     try {
-        // Gọi service để xử lý nghiệp vụ
         const { newTransaction, initialProgress } = yield transactionService.createTransaction(userId, courseId, transactionId, amount, paymentProvider);
         res.json({
             message: "Purchase a course successfully!!!",

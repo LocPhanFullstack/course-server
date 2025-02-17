@@ -42,7 +42,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCourse = exports.updateCourse = exports.createCourse = exports.getCourse = exports.getListOfCourses = void 0;
+exports.getUploadVideoUrl = exports.deleteCourse = exports.updateCourse = exports.createCourse = exports.getCourse = exports.getListOfCourses = void 0;
 const courseService = __importStar(require("../services/courseService"));
 const express_1 = require("@clerk/express");
 const getListOfCourses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -119,3 +119,19 @@ const deleteCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.deleteCourse = deleteCourse;
+const getUploadVideoUrl = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { fileName, fileType } = req.body;
+    try {
+        const data = yield courseService.getUploadVideoUrl(fileName, fileType);
+        res.json({
+            message: "Upload URL generated successfully",
+            data,
+        });
+    }
+    catch (error) {
+        res
+            .status(500)
+            .json({ message: "Error generating upload URL", error: error.message });
+    }
+});
+exports.getUploadVideoUrl = getUploadVideoUrl;

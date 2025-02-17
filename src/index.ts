@@ -14,6 +14,8 @@ import {
   createClerkClient,
   requireAuth,
 } from "@clerk/express";
+import serverless from "serverless-http";
+import seed from "./seed/seedDynamoDB";
 
 dotenv.config();
 
@@ -52,3 +54,17 @@ const port = process.env.PORT || 8080;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+// aws production environment
+const serverlessApp = serverless(app);
+export const handler = async (event: any, context: any) => {
+  if (event.action === "seed ") {
+    await seed();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Data seeded successfully" }),
+    };
+  } else {
+    return serverlessApp(event, context);
+  }
+};

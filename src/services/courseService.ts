@@ -1,5 +1,8 @@
 import Course from "../models/courseModel";
 import { v4 as uuidv4 } from "uuid";
+import AWS from "aws-sdk";
+
+const s3 = new AWS.S3();
 
 // List courses based on category
 export const getListOfCourses = async (category: string | undefined) => {
@@ -121,4 +124,29 @@ export const deleteCourse = async (courseId: string, userId: string) => {
   }
 
   await Course.delete(courseId);
+};
+
+export const getUploadVideoUrl = async (fileName: string, fileType: string) => {
+  if (!fileName || !fileType) {
+    throw new Error("File name and type are all required");
+  }
+
+  try {
+    const uniqueId = uuidv4();
+    const s3Key = `videos/${uniqueId}/${fileName}`;
+
+    const s3Params = {
+      Bucket: process.env.S3_BUCKET_NAME || "",
+      key: s3Key,
+      Expires: 60,
+      contentType: fileType,
+    };
+
+    const uploadUrl = s3.getSignedUrl("putObject", s3Params);
+    const videoUrl = `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${fileName}`;
+
+    return { uploadUrl, videoUrl };
+  } catch (error) {
+    throw new Error("Error generating upload URL");
+  }
 };

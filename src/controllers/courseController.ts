@@ -90,3 +90,22 @@ export const deleteCourse = async (
       .json({ message: "Error deleting course", error: error.message });
   }
 };
+
+export const getUploadVideoUrl = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { fileName, fileType } = req.body;
+
+  try {
+    const data = await courseService.getUploadVideoUrl(fileName, fileType);
+    res.json({
+      message: "Upload URL generated successfully",
+      data,
+    });
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: "Error generating upload URL", error: error.message });
+  }
+};

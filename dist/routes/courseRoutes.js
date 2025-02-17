@@ -47,4 +47,5 @@ router.post("/", (0, express_2.requireAuth)(), courseController.createCourse);
 router.get("/:courseId", courseController.getCourse);
 router.delete("/:courseId", (0, express_2.requireAuth)(), courseController.deleteCourse);
 router.put("/:courseId", (0, express_2.requireAuth)(), upload.single("image"), courseController.updateCourse);
+router.post("/:courseId/sections/:sectionId/chapters/:chapterId/get-upload-url", (0, express_2.requireAuth)(), courseController.getUploadVideoUrl);
 exports.default = router;

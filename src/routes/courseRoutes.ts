@@ -16,5 +16,10 @@ router.put(
   upload.single("image"),
   courseController.updateCourse
 );
+router.post(
+  "/:courseId/sections/:sectionId/chapters/:chapterId/get-upload-url",
+  requireAuth(),
+  courseController.getUploadVideoUrl
+);
 
 export default router;
