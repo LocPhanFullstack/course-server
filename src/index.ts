@@ -58,7 +58,7 @@ app.listen(port, () => {
 // aws production environment
 const serverlessApp = serverless(app);
 export const handler = async (event: any, context: any) => {
-  if (event.action === "seed ") {
+  if (event.action === "seed") {
     await seed();
     return {
       statusCode: 200,
