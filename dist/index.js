@@ -93,7 +93,7 @@ app.listen(port, () => {
 // aws production environment
 const serverlessApp = (0, serverless_http_1.default)(app);
 const handler = (event, context) => __awaiter(void 0, void 0, void 0, function* () {
-    if (event.action === "seed ") {
+    if (event.action === "seed") {
         yield (0, seedDynamoDB_1.default)();
         return {
             statusCode: 200,

@@ -137,9 +137,9 @@ export const getUploadVideoUrl = async (fileName: string, fileType: string) => {
 
     const s3Params = {
       Bucket: process.env.S3_BUCKET_NAME || "",
-      key: s3Key,
+      Key: s3Key,
       Expires: 60,
-      contentType: fileType,
+      ContentType: fileType,
     };
 
     const uploadUrl = s3.getSignedUrl("putObject", s3Params);

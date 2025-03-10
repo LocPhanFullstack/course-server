@@ -123,9 +123,9 @@ const getUploadVideoUrl = (fileName, fileType) => __awaiter(void 0, void 0, void
         const s3Key = `videos/${uniqueId}/${fileName}`;
         const s3Params = {
             Bucket: process.env.S3_BUCKET_NAME || "",
-            key: s3Key,
+            Key: s3Key,
             Expires: 60,
-            contentType: fileType,
+            ContentType: fileType,
         };
         const uploadUrl = s3.getSignedUrl("putObject", s3Params);
         const videoUrl = `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${fileName}`;
